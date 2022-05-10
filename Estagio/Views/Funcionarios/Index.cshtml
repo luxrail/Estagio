@@ -1,0 +1,83 @@
+﻿<link rel="stylesheet" href="https://fonts.sandbox.google.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+<script>
+function myFunction() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
+
+@model IEnumerable<estagio.Models.Funcionarios>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Funcionarios Cadastrados</h1>
+<div class="row">
+    <label>Pesquisa:</label>
+    <div class="col-10">
+     <input class="form-control" style="width:auto" id="myInput" onkeyup="myFunction()" placeholder="Pesquisa por nomes">
+     </div>
+     <div class="col-2">
+    <a class="btn btn-primary" style="width:auto" asp-action="Create">Novo Funcionario</a>
+    <br>
+    </div>
+</div>
+<table class="table" id="myTable">
+    <thead>
+        <tr name="tr">
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nascimento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Salario)
+            </th>
+            <th class="th">
+                @Html.DisplayNameFor(model => model.Atividade)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nascimento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Salario)
+            </td>
+            <td class="td">
+                @Html.DisplayFor(modelItem => item.Atividade)
+            </td>
+            <td>
+               <span class="material-symbols-outlined"><a asp-action="Edit" asp-route-id="@item.Id" style="text-decoration:none">edit</a></span>
+               <span class="material-symbols-outlined"><a asp-action="Delete" asp-route-id="@item.Id" style="text-decoration:none">delete</a></span>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
